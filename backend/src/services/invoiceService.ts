@@ -1,4 +1,4 @@
-import { invoices } from './data/invoices';
+import { invoices } from '../../data/invoices';
 
 const getInvoices = () => {
   return invoices;
