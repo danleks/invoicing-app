@@ -1,9 +1,10 @@
 import { invoices } from '../../data/invoices';
+import { InvoiceEntry, PreviewDataForInvoiceEntry } from '../../types';
 
-const getInvoices = () => {
+const getInvoices = (): InvoiceEntry[] => {
   return invoices;
 };
-const getPreviewDataForInvoiceEntry = () => {
+const getPreviewDataForInvoiceEntry = (): PreviewDataForInvoiceEntry[] => {
   return invoices.map(({ id, paymentDue, clientName, total, status }) => ({
     id,
     paymentDue,
