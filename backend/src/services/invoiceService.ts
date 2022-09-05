@@ -1,5 +1,5 @@
 import { invoices } from '../../data/invoices';
-import { InvoiceEntry, PreviewDataForInvoiceEntry } from '../../types';
+import { InvoiceEntry, NewInvoiceEntry, PreviewDataForInvoiceEntry } from '../../types';
 import { v1 as uuid } from 'uuid';
 
 const getInvoices = (): InvoiceEntry[] => {
@@ -18,14 +18,14 @@ const getSingleInvoice = (id: string): InvoiceEntry | undefined => {
   const invoice = invoices.find(i => i.id === id);
   return invoice;
 };
-const addInvoice = (newInvoice): InvoiceEntry => {
+const addInvoice = (newInvoice: NewInvoiceEntry): InvoiceEntry => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const id: string = uuid() as string;
   const newInvoiceEntry = {
-    id: uuid().substring(0, 5),
+    id,
     ...newInvoice
   };
-
   invoices.push(newInvoiceEntry);
-
   return newInvoiceEntry;
 };
 const deleteInvoice = () => {
