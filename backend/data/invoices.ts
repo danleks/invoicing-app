@@ -1,6 +1,6 @@
-import { Invoice } from '../types';
+import { InvoiceEntry } from '../types';
 
-export const invoices: Invoice[] = [
+export const invoices: InvoiceEntry[] = [
   {
     'id': 'RT3080',
     'createdAt': '2021-08-18',
