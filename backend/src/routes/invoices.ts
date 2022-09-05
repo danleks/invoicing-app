@@ -10,6 +10,10 @@ router.get('/', (_req, res) => {
   res.send('Fetching all invoices');
 });
 
+router.get('/:id', (_req, res) => {
+  res.send('fetching a single invoice');
+});
+
 router.put('/:id', (_req, res) => {
   res.send('Updating the invoice');
 });

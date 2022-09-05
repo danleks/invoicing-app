@@ -1,5 +1,6 @@
 import { invoices } from '../../data/invoices';
 import { InvoiceEntry, PreviewDataForInvoiceEntry } from '../../types';
+import { v1 as uuid } from 'uuid';
 
 const getInvoices = (): InvoiceEntry[] => {
   return invoices;
@@ -13,8 +14,19 @@ const getPreviewDataForInvoiceEntry = (): PreviewDataForInvoiceEntry[] => {
     status,
   }));
 };
-const addInvoice = () => {
-  //
+const getSingleInvoice = (id: string): InvoiceEntry | undefined => {
+  const invoice = invoices.find(i => i.id === id);
+  return invoice;
+};
+const addInvoice = (newInvoice): InvoiceEntry => {
+  const newInvoiceEntry = {
+    id: uuid().substring(0, 5),
+    ...newInvoice
+  };
+
+  invoices.push(newInvoiceEntry);
+
+  return newInvoiceEntry;
 };
 const deleteInvoice = () => {
   //
@@ -29,4 +41,5 @@ export default {
   deleteInvoice,
   updateInvoice,
   getPreviewDataForInvoiceEntry,
+  getSingleInvoice,
 };
