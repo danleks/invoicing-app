@@ -13,6 +13,10 @@ const getPreviewDataForInvoiceEntry = (): PreviewDataForInvoiceEntry[] => {
     status,
   }));
 };
+const getSingleInvoice = (id: string): InvoiceEntry | undefined => {
+  const invoice = invoices.find(i => i.id === id);
+  return invoice;
+};
 const addInvoice = () => {
   //
 };
@@ -29,4 +33,5 @@ export default {
   deleteInvoice,
   updateInvoice,
   getPreviewDataForInvoiceEntry,
+  getSingleInvoice,
 };
