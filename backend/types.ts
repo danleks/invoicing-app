@@ -1,5 +1,6 @@
 export type Status = 'paid' | 'pending' | 'paid' | 'draft';
 export type PreviewDataForInvoiceEntry = Pick<InvoiceEntry, 'id' | 'paymentDue' | 'clientName' | 'total' | 'status'>;
+export type NewInvoiceEntry = Omit<InvoiceEntry, 'id'>;
 
 interface Address {
   street: string,
