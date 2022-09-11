@@ -1,15 +1,20 @@
-export type Status = 'paid' | 'pending' | 'paid' | 'draft';
 export type PreviewDataForInvoiceEntry = Pick<InvoiceEntry, 'id' | 'paymentDue' | 'clientName' | 'total' | 'status'>;
 export type NewInvoiceEntry = Omit<InvoiceEntry, 'id'>;
 
-interface Address {
+export enum Status {
+  Paid = 'paid',
+  Pending = 'pending',
+  Draft = 'draft',
+}
+
+export interface Address {
   street: string,
   city: string,
   postCode: string,
   country: string,
 }
 
-interface Item {
+export interface Item {
   name: string,
   quantity: number,
   price: number,
