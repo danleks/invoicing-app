@@ -28,8 +28,8 @@ const addInvoice = (newInvoice: NewInvoiceEntry): InvoiceEntry => {
   invoices.push(newInvoiceEntry);
   return newInvoiceEntry;
 };
-const deleteInvoice = () => {
-  //
+const deleteInvoice = (id: string) => {
+  invoices.filter(i => i.id === id);
 };
 const updateInvoice = () => {
   //

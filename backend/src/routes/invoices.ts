@@ -1,4 +1,5 @@
 import express from 'express';
+import invoiceService from '../services/invoiceService';
 
 const router = express.Router();
 
@@ -7,7 +8,13 @@ router.post('/', (_req, res) => {
 });
 
 router.get('/', (_req, res) => {
-  res.send('Fetching all invoices');
+  const invoices = invoiceService.getInvoices();
+
+  if (invoices) {
+    res.json(invoices);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 router.get('/:id', (_req, res) => {
