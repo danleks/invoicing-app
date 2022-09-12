@@ -1,17 +1,5 @@
 import { Address, Item, NewInvoiceEntry, Status } from './types';
 
-// createdAt: string,
-// paymentDue: string,
-// description: string,
-// paymentTerms: number,
-// clientName: string,
-// clientEmail: string,
-// status: Status,
-// senderAddress: Address,
-// clientAddress: Address,
-// items: Item[],
-// total: number,
-
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
@@ -82,7 +70,7 @@ const parseEmail = (email: unknown): string => {
 };
 
 const parseStatus = (status: unknown): Status => {
-  if (!status || !isString(status) || isStatus(status)) {
+  if (!status || !isString(status) || !isStatus(status)) {
     throw new Error('invalid or missing status' + status);
   }
 
