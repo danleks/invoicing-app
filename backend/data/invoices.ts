@@ -1,6 +1,7 @@
-import { InvoiceEntry } from '../types';
+import { InvoiceEntry, Status } from '../types';
+import { toNewInvoiceEntry } from '../utils';
 
-export const invoices: InvoiceEntry[] = [
+const data: InvoiceEntry[] = [
   {
     'id': 'RT3080',
     'createdAt': '2021-08-18',
@@ -9,7 +10,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 1,
     'clientName': 'Jensen Huang',
     'clientEmail': 'jensenh@mail.com',
-    'status': 'paid',
+    'status': Status.Paid,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -40,7 +41,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 30,
     'clientName': 'Alex Grim',
     'clientEmail': 'alexgrim@mail.com',
-    'status': 'pending',
+    'status': Status.Pending,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -77,7 +78,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 7,
     'clientName': 'John Morrison',
     'clientEmail': 'jm@myco.com',
-    'status': 'paid',
+    'status': Status.Paid,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -108,7 +109,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 1,
     'clientName': 'Alysa Werner',
     'clientEmail': 'alysa@email.co.uk',
-    'status': 'pending',
+    'status': Status.Pending,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -139,7 +140,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 7,
     'clientName': 'Mellisa Clarke',
     'clientEmail': 'mellisa.clarke@example.com',
-    'status': 'pending',
+    'status': Status.Pending,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -176,7 +177,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 30,
     'clientName': 'Thomas Wayne',
     'clientEmail': 'thomas@dc.com',
-    'status': 'pending',
+    'status': Status.Pending,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -207,7 +208,7 @@ export const invoices: InvoiceEntry[] = [
     'paymentTerms': 7,
     'clientName': 'Anita Wainwright',
     'clientEmail': '',
-    'status': 'draft',
+    'status': Status.Draft,
     'senderAddress': {
       'street': '19 Union Terrace',
       'city': 'London',
@@ -231,3 +232,9 @@ export const invoices: InvoiceEntry[] = [
     'total': 3102.04
   }
 ];
+
+export const invoiceEntries: InvoiceEntry[] = data.map(obj => {
+  const object = toNewInvoiceEntry(obj) as InvoiceEntry;
+  object.id = obj.id;
+  return object;
+});
