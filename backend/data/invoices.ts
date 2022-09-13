@@ -230,7 +230,38 @@ const data: InvoiceEntry[] = [
       }
     ],
     'total': 3102.04
-  }
+  },
+  // {
+  //   'id': 'FV23x3',
+  //   'createdAt': '2021-11-05',
+  //   'paymentDue': '',
+  //   'description': '',
+  //   'paymentTerms': 0,
+  //   'clientName': '',
+  //   'clientEmail': '',
+  //   'status': Status.Draft,
+  //   'senderAddress': {
+  //     'street': '',
+  //     'city': '',
+  //     'postCode': '',
+  //     'country': ''
+  //   },
+  //   'clientAddress': {
+  //     'street': '',
+  //     'city': '',
+  //     'postCode': '',
+  //     'country': ''
+  //   },
+  //   'items': [
+  //     {
+  //       'name': '',
+  //       'quantity': 0,
+  //       'price': 0,
+  //       'total': 0,
+  //     }
+  //   ],
+  //   'total': 0
+  // }
 ];
 
 export const invoiceEntries: InvoiceEntry[] = data.map(obj => {

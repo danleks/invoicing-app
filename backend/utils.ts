@@ -13,16 +13,12 @@ const isNumber = (number: unknown): number is number => {
 };
 
 const isValidEmail = (email: string): boolean => {
-  const regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
+  const regex = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$');
   return regex.test(email);
 };
 
 const isStatus = (status: any): status is Status => {
   return Object.values(Status).includes(status);
-};
-
-const isObject = (object: unknown): object is object => {
-  return typeof object === 'object' && !Array.isArray(object);
 };
 
 const isValidPrice = (price: number): boolean => {
@@ -47,7 +43,7 @@ const parseDescription = (text: unknown): string => {
 
 const parseNumber = (number: unknown): number => {
   if (!number || !isNumber(number)) {
-    throw new Error('invalid or missing number' + number);
+    throw new Error(`invalid or missing number ${number}`);
   }
 
   return number;
@@ -62,7 +58,8 @@ const parseClientName = (name: unknown): string => {
 };
 
 const parseEmail = (email: unknown): string => {
-  if (!email || !isString(email) || !isValidEmail(email)) {
+  if (!email) return '';
+  if (!isString(email) || !isValidEmail(email)) {
     throw new Error('invalid or missing email' + email);
   }
 
@@ -78,26 +75,10 @@ const parseStatus = (status: unknown): Status => {
 };
 
 const parseString = (string: unknown): string => {
-  if (!string || !isString(string)) {
+  if (!isString(string)) {
     throw new Error('invalid or missing string' + string);
   }
   return string;
-};
-
-const parseAddress = (object: Address): Address => {
-
-  if (!object || !isObject(object)) {
-    throw new Error('missing or invalid address object' + object);
-  }
-
-  const address = {
-    street: parseString(object.street),
-    city: parseString(object.city),
-    postCode: parseString(object.postCode),
-    country: parseString(object.country),
-  };
-
-  return address;
 };
 
 const parsePrice = (price: unknown): number => {
@@ -115,29 +96,61 @@ const parseItems = (items: unknown): Item[] => {
 
   return items.map(item => {
     return {
-      name: parseString(item.name),
-      quantity: parseNumber(item.quantity),
-      price: parsePrice(item.price),
-      total: parsePrice(item.total),
+      name: item.status === 'draft' ? parseStringDraft(item.name) : parseString(item.name),
+      quantity: item.status === 'draft' ? parseNumericDraft(item.quantity) : parseNumber(item.quantity),
+      price: item.status === 'draft' ? parseNumericDraft(item.price) : parsePrice(item.price),
+      total: item.status === 'draft' ? parseNumericDraft(item.total) : parsePrice(item.total),
     };
   });
 };
 
-type Fields = { createdAt: unknown, paymentDue: unknown, description: unknown, paymentTerms: unknown, clientName: unknown, clientEmail: unknown, status: unknown, senderAddress: Address, clientAddress: Address, items: unknown, total: unknown };
+const parseStringDraft = (item: unknown): string => {
+  if (!isString(item)) {
+    throw new Error('item is not a string' + item);
+  }
 
-export const toNewInvoiceEntry = (object: Fields): NewInvoiceEntry => {
+  return item;
+};
+
+const parseNumericDraft = (item: unknown): number => {
+  if (item === 0) {
+    console.log('inside');
+    return 0;
+  }
+
+  if (!isNumber(item)) {
+    throw new Error('item is not a number ' + item);
+  }
+
+  return item;
+};
+
+
+type NewInvoiceFields = { createdAt: unknown, paymentDue: unknown, description: unknown, paymentTerms: unknown, clientName: unknown, clientEmail: unknown, status: unknown, senderAddress: Address, clientAddress: Address, items: unknown, total: unknown };
+
+export const toNewInvoiceEntry = (object: NewInvoiceFields): NewInvoiceEntry => {
   const newEntry: NewInvoiceEntry = {
     createdAt: parseDate(object.createdAt),
-    paymentDue: parseDate(object.paymentDue),
-    description: parseDescription(object.description),
-    paymentTerms: parseNumber(object.paymentTerms),
-    clientName: parseClientName(object.clientName),
-    clientEmail: parseEmail(object.clientEmail),
+    paymentDue: object.status === Status.Draft ? parseStringDraft(object.paymentDue) : parseDate(object.paymentDue),
+    description: object.status === Status.Draft ? parseStringDraft(object.description) : parseDescription(object.description),
+    paymentTerms: object.status === Status.Draft ? parseNumericDraft(object.paymentTerms) : parseNumber(object.paymentTerms),
+    clientName: object.status === Status.Draft ? parseStringDraft(object.clientName) : parseClientName(object.clientName),
+    clientEmail: object.status === Status.Draft ? parseStringDraft(object.clientEmail) :parseEmail(object.clientEmail),
     status: parseStatus(object.status),
-    senderAddress: parseAddress(object.senderAddress),
-    clientAddress: parseAddress(object.clientAddress),
+    senderAddress: {
+      street: object.status === Status.Draft ? parseStringDraft(object.senderAddress.street) : parseString(object.senderAddress.street),
+      city: object.status === Status.Draft ? parseStringDraft(object.senderAddress.city) : parseString(object.senderAddress.city),
+      postCode: object.status === Status.Draft ? parseStringDraft(object.senderAddress.postCode) : parseString(object.senderAddress.postCode),
+      country: object.status === Status.Draft ? parseStringDraft(object.senderAddress.country) : parseString(object.senderAddress.country),
+    },
+    clientAddress: {
+      street: object.status === Status.Draft ? parseStringDraft(object.clientAddress.street) : parseString(object.clientAddress.street),
+      city: object.status === Status.Draft ? parseStringDraft(object.clientAddress.city) : parseString(object.clientAddress.city),
+      postCode: object.status === Status.Draft ? parseStringDraft(object.clientAddress.postCode) : parseString(object.clientAddress.postCode),
+      country: object.status === Status.Draft ? parseStringDraft(object.clientAddress.country) : parseString(object.clientAddress.country),
+    },
     items: parseItems(object.items),
-    total: parsePrice(object.total),
+    total: object.status === Status.Draft ? parseNumericDraft(object.total) : parsePrice(object.total),
   };
 
   return newEntry;

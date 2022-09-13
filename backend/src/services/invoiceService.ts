@@ -6,8 +6,9 @@ const getInvoices = (): InvoiceEntry[] => {
   return invoiceEntries;
 };
 const getPreviewDataForInvoiceEntry = (): PreviewDataForInvoiceEntry[] => {
-  return invoiceEntries.map(({ id, paymentDue, clientName, total, status }) => ({
+  return invoiceEntries.map(({ id, createdAt, paymentDue, clientName, total, status }) => ({
     id,
+    createdAt,
     paymentDue,
     clientName,
     total,
