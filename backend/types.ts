@@ -1,5 +1,6 @@
-export type PreviewDataForInvoiceEntry = Pick<InvoiceEntry, 'id' | 'paymentDue' | 'clientName' | 'total' | 'status'>;
+export type PreviewDataForInvoiceEntry = Pick<InvoiceEntry, 'id' | 'createdAt' | 'paymentDue' | 'clientName' | 'total' | 'status'>;
 export type NewInvoiceEntry = Omit<InvoiceEntry, 'id'>;
+export type NewDraftInvoiceEntry = Omit<DraftInvoiceEntry, 'id'>;
 
 export enum Status {
   Paid = 'paid',
@@ -34,4 +35,19 @@ export interface InvoiceEntry {
   clientAddress: Address,
   items: Item[],
   total: number,
+}
+
+export interface DraftInvoiceEntry {
+  id: string,
+  createdAt: string,
+  paymentDue: string,
+  description?: string,
+  paymentTerms?: number,
+  clientName?: string,
+  clientEmail?: string,
+  status: Status,
+  senderAddress?: Address,
+  clientAddress?: Address,
+  items?: Item[],
+  total?: number,
 }
